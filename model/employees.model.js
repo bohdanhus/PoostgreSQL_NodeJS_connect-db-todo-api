@@ -1,67 +1,55 @@
-const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Ноябрь', 'Декабрь',];
-
-function formatByMonth(emp) {
-    let employees;
-    let employMap;
-    employMap = new Map();
-    emp.forEach((user) => {
-        let birthDate = new Date(user.birthDay);
-        let birthMonth = birthDate.getMonth() + 1;
-        if (employMap.has(birthMonth) !== true) {
-            employMap.set(birthMonth, [{fullName: user.fullName, birthDay: birthDate}])
-        } else {
-            employees = employMap.get(birthMonth);
-            employees.push({fullName: user.fullName, birthDay: birthDate});
-            employMap.set(birthMonth, employees)
-        }
-        console.log(employMap);
-    });
-    return employMap;
-};
-
-function getAge(date) {
-    let today = new Date();
-    let age = today.getFullYear() - date.getFullYear();
-    let m = today.getMonth() - date.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
-        age--;
-    }
-    return age;
-}
-function Plural(n, nom, gen, plu) {
-    if (n % 10 === 1 && n % 100 !== 11) {
-        return `${n} ${nom}`;
-    } else if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) {
-        return `${n} ${gen}`;
-    } else {
-        return `${n} ${plu}`
-    }
-};
-function displayBirthdayOfMonth(employees) {
-    let string = ""
-    for (let j = 0; j < employees.length; j++) {
-        string = string + (`(${employees[j].birthDay.getDate()}) -  ${employees[j].fullName} (${Plural(getAge(employees[j].birthDay), "год", "года", "лет")})` + "\n");
-    }
-    return string
-}
-
-function showPlanning(eMap, horizontalPlanning) {
-    let currentDate = new Date();
-    let currentYear = currentDate.getFullYear();
-    let mm = currentDate.getMonth() + 1;
-    for (let i = mm; i <= mm + horizontalPlanning; i++) {
-        for (const [key, employees] of eMap) {
-            if (key === i) {
-                console.log(`${months[i - 1]} ${currentYear} ` )
-                console.log(displayBirthdayOfMonth(employees));
+const sortList = arr => {
+    for (let i = 0, endI = arr.length - 1; i < endI; i++) {
+        let wasSwap = false;
+        for (let j = 0, endJ = endI - i; j < endJ; j++) {
+            if (arr[j].birthday.getDate() > arr[j + 1].birthday.getDate()) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                wasSwap = true;
             }
         }
+        if (!wasSwap) break;
+    }
+    return arr;
+};
+const formatDate = (date) => {
+    const options = {month: 'long', year: 'numeric'};
+    let formatDate = new Date(date).toLocaleString('ru-RU', options);
+    return formatDate[0].toUpperCase() + formatDate.slice(1, -2);
+}
+const findHowOld = (employee, date) => {
+    let diff = date - employee.birthday;
+    return Math.floor(diff / 31557600000);
+}
+const show = (employees, date, quantity) => {
+    let result = '';
+    for (let i = 0; i <= quantity; i++) {
+        date.setMonth(date.getMonth() + 1);
+        result += `${formatDate(date)}\n`;
+        sortList(employees);
+        employees.map(employee => {
+            if (employee.birthday.getMonth() === date.getMonth()) {
+                result += '(' + employee.birthday.getDate() + ') - ' + employee.fullname + ' (' + pl(findHowOld(employee, date)) + ')\n'
+            }
+        });
+    }
+    return result;
+}
+
+const pl = (age) => {
+    if (age !== 11 && age % 10 === 1) {
+        return age + ' ' + 'год';
+    } else if (age % 10 >= 2 && age % 10 <= 4 && (age << 5 || age >> 21)) {
+        return age + ' ' + 'года';
+    } else if (age % 10 === 0 || (age >= 5 && age <= 20) || (age % 10 >= 5 && age % 10 <= 9)) {
+        return age + ' ' + 'лет';
     }
 }
-const main = (employees, planning) => {
-    console.log(employees)
-    console.log(planning)
-    let eMap = formatByMonth(employees);
-    return showPlanning(eMap, planning);
+
+const main = (employees, variant) => {
+    let date = new Date();
+    date.setMonth(date.getMonth() - 1);
+    return show(employees, date, variant);
 }
-module.exports = { main };
+
+
+module.exports = {main};
