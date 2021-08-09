@@ -1,55 +1,57 @@
-const sortList = arr => {
-    for (let i = 0, endI = arr.length - 1; i < endI; i++) {
-        let wasSwap = false;
-        for (let j = 0, endJ = endI - i; j < endJ; j++) {
-            if (arr[j].birthday.getDate() > arr[j + 1].birthday.getDate()) {
-                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-                wasSwap = true;
-            }
-        }
-        if (!wasSwap) break;
-    }
-    return arr;
-};
-const formatDate = (date) => {
-    const options = {month: 'long', year: 'numeric'};
-    let formatDate = new Date(date).toLocaleString('ru-RU', options);
-    return formatDate[0].toUpperCase() + formatDate.slice(1, -2);
-}
-const findHowOld = (employee, date) => {
-    let diff = date - employee.birthday;
-    return Math.floor(diff / 31557600000);
-}
-const show = (employees, date, quantity) => {
+
+const printEmployees = (employees, date, number) => {
     let result = '';
-    for (let i = 0; i <= quantity; i++) {
+    for (let i = 0; i <= number; i++) {
         date.setMonth(date.getMonth() + 1);
         result += `${formatDate(date)}\n`;
         sortList(employees);
         employees.map(employee => {
             if (employee.birthday.getMonth() === date.getMonth()) {
-                result += '(' + employee.birthday.getDate() + ') - ' + employee.fullname + ' (' + pl(findHowOld(employee, date)) + ')\n'
+                result += '(' + employee.birthday.getDate() + ') - ' + employee.fullname + ' (' + Plural(findHowOld(employee, date)) + ')\n'
             }
         });
     }
     return result;
 }
 
-const pl = (age) => {
-    if (age !== 11 && age % 10 === 1) {
-        return age + ' ' + 'год';
-    } else if (age % 10 >= 2 && age % 10 <= 4 && (age << 5 || age >> 21)) {
-        return age + ' ' + 'года';
-    } else if (age % 10 === 0 || (age >= 5 && age <= 20) || (age % 10 >= 5 && age % 10 <= 9)) {
-        return age + ' ' + 'лет';
+const formatDate = (date) => {
+    const options = {month: 'long', year: 'numeric'};
+    let formatDate = new Date(date).toLocaleString('ru-RU', options);
+    return formatDate[0].toUpperCase() + formatDate.slice(1, -2);
+}
+const sortList = array => {
+    for (let i = 0, endI = array.length - 1; i < endI; i++) {
+        let wasSwap = false;
+        for (let j = 0, endJ = endI - i; j < endJ; j++) {
+            if (array[j].birthday.getDate() > array[j + 1].birthday.getDate()) {
+                [array[j], array[j + 1]] = [array[j + 1], array[j]];
+                wasSwap = true;
+            }
+        }
+        if (!wasSwap) break;
     }
+    return array;
+}
+const findHowOld = (employee, date) => {
+    let diff = date - employee.birthday;
+    return Math.floor(diff / 31557600000);
 }
 
-const main = (employees, variant) => {
+
+function Plural(n) {
+    if (n % 10 === 1 && n % 100 !== 11) {
+        return `${n} год`;
+    } else if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) {
+        return `${n} года`;
+    } else {
+        return `${n} года`;
+    }
+};
+
+const main = (employees, number) => {
     let date = new Date();
     date.setMonth(date.getMonth() - 1);
-    return show(employees, date, variant);
+    return printEmployees(employees, date, number);
 }
 
-
-module.exports = {main};
+export {main}

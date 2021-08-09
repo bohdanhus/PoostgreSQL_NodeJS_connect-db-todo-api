@@ -1,6 +1,9 @@
-const Router = require('express');
+import Router from 'express';
+import {todoController} from '../controller/todo.controller.js'
+
 const router = new Router()
-const todoController = require('../controller/todo.controller')
+
+
 
 router.post('/', (req, res) => {
     todoController.createTask(req, res)
@@ -18,4 +21,4 @@ router.delete('/:id', (req, res) => {
     todoController.deleteTask(req, res)
 });
 
-module.exports = router
+export default router

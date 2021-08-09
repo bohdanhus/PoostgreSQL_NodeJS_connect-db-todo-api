@@ -1,5 +1,5 @@
-const db = require('../db');
-const {main} = require('../model/employees.model')
+import db from '../db.js';
+import {main} from '../model/employees.model.js'
 
 class EmployeesController {
     async getEmployees(req, res) {
@@ -10,4 +10,5 @@ class EmployeesController {
     }
 }
 
-module.exports = new EmployeesController();
+export const employeeController = new EmployeesController();
+

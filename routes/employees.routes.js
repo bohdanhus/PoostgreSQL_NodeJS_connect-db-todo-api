@@ -1,9 +1,10 @@
-const Router = require('express');
-const employeeController = require('../controller/employees.controller');
-const router = new Router();
+import Router from 'express';
+import {employeeController} from '../controller/employees.controller.js'
+
+const router = new Router()
 
 router.get('/:planning', (req, res) => {
     employeeController.getEmployees(req, res);
 });
 
-module.exports = router;
+export default router;
