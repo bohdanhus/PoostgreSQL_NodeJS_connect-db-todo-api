@@ -1,13 +1,11 @@
 import Router from 'express';
-import {todoController} from '../controller/todo.controller.js'
+import {todoController} from '../controller/todoController.js'
 
 const router = new Router()
 
 
-router.get('/today', (req, res) => {
+router.get('/', (req, res) => {
     todoController.getTasksForToday(req, res)
 });
-router.get('/state', (req, res) => {
-    todoController.getState(req, res)
-});
+
 export default router

@@ -1,4 +1,3 @@
-
 const printEmployees = (employees, date, number) => {
     let result = '';
     for (let i = 0; i <= number; i++) {

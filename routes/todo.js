@@ -1,8 +1,7 @@
 import Router from 'express';
-import {todoController} from '../controller/todo.controller.js'
+import {todoController} from '../controller/todoController.js'
 
 const router = new Router()
-
 
 
 router.post('/', (req, res) => {
