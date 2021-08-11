@@ -1,11 +1,13 @@
-import Pool from 'pg-pool'
+import knex from 'knex'
+const kn = knex({
+    client: 'pg',
+    version: '6.14.14',
+    connection: {
+        host : 'localhost',
+        user : 'todolist_app',
+        password : 'intern',
+        database : 'employee'
+    }
+});
 
-const pool = new Pool({
-    user: 'todolist_app',
-    password: 'intern',
-    host: 'localhost',
-    port: 5432,
-    database: 'employee',
-})
-
-export default pool;
+export default kn;

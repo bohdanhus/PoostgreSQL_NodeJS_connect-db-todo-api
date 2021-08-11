@@ -11,9 +11,9 @@ router.get('/', (req, res) => {
     todoController.getTasks(req, res)
 });
 router.get('/:id', (req, res) => {
-    todoController.getOneTask(req, res)
+    todoController.getTask(req, res)
 });
-router.put('/', (req, res) => {
+router.put('/:id', (req, res) => {
     todoController.updateTask(req, res)
 });
 router.delete('/:id', (req, res) => {

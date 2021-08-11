@@ -1,12 +1,11 @@
-import db from '../db.js';
-import {main} from '../model/employees.model.js'
+import {main} from '../model/employees.js'
+import kn from "../db.js";
 
 class EmployeesController {
     async getEmployees(req, res) {
         const planning = req.params.planning;
-        const employees = await db.query(`SELECT *
-                                          FROM empl`);
-        res.end(main(employees.rows, planning));
+        const employees = await kn.select().table('empl')
+        res.end(main(employees, planning));
     }
 }
 
