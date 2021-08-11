@@ -1,12 +1,16 @@
-const express = require('express')
-
-const todo = require('./todo.routes')
-const employees = require('./employees.routes')
+import express from "express";
+import collection from './collection.js'
+import employees from './employees.js'
+import dashboard from './dashboard.js'
+import lists from './lists.js'
+import todo from './todo.js'
 
 const router = express.Router()
 
+router.use('/collection', collection)
+router.use('/dashboard', dashboard)
+router.use('/employees', employees)
+router.use('/lists', lists)
 router.use('/todo', todo)
-router.use("/employees", employees)
 
-
-module.exports = router
+export default router
